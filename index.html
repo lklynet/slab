@@ -14,6 +14,8 @@
     <script>
       // Inject API key from environment
       window.API_KEY = "{{API_KEY}}";
+      console.log("API Key length:", window.API_KEY?.length); // Should show the length, not the actual key
+      console.log("API Key set:", !!window.API_KEY); // Should be true
     </script>
   </head>
   <body>

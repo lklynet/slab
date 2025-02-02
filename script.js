@@ -39,6 +39,11 @@ let isProgrammaticChange = false;
 
 // Helper function for API calls
 async function fetchAPI(endpoint, options = {}) {
+  if (!API_KEY) {
+    console.error("API key is not set");
+    throw new Error("API key is not configured");
+  }
+
   const headers = {
     "X-API-Key": API_KEY,
     "Content-Type": "application/json",
@@ -46,10 +51,15 @@ async function fetchAPI(endpoint, options = {}) {
   };
 
   try {
+    console.log("Making request with API key:", API_KEY); // Temporary debug log
     const response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
       headers,
     });
+
+    if (response.status === 401) {
+      throw new Error("Invalid API key");
+    }
 
     if (!response.ok) {
       throw new Error(`API call failed: ${response.statusText}`);

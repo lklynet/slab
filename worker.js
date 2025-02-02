@@ -21,8 +21,15 @@ async function handleRequest(request, env) {
 
   // Verify API key
   const apiKey = request.headers.get("X-API-Key");
+  if (!apiKey) {
+    return new Response("Missing API key", {
+      status: 401,
+      headers: corsHeaders,
+    });
+  }
+
   if (apiKey !== env.API_KEY) {
-    return new Response("Unauthorized", {
+    return new Response("Invalid API key", {
       status: 401,
       headers: corsHeaders,
     });
