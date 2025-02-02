@@ -10,6 +10,7 @@ async function handleRequest(request, env) {
     "Access-Control-Allow-Origin": "https://tasks2.lkly.net", // Your frontend domain
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
+    "Access-Control-Allow-Credentials": "true",
     "Access-Control-Max-Age": "86400", // 24 hours
   };
 
