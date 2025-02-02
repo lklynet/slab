@@ -261,7 +261,7 @@ function renderBoard() {
       const taskElement = document.createElement("div");
       taskElement.className = `bg-[#1e1e2e] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#313244] ${
         task.completed
-          ? "bg-[#a6e3a1] bg-opacity-20 text-[#a6e3a1]"
+          ? "bg-[#a6e3a1] bg-opacity-20 text-[#1e1e2e]"
           : "text-[#cdd6f4]"
       }`;
       taskElement.draggable = true;
