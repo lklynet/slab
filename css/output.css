@@ -660,29 +660,29 @@
     border-right-style: var(--tw-border-style);
     border-right-width: 1px;
   }
-  .border-\[\#313244\] {
-    border-color: #313244;
+  .border-gray-700 {
+    border-color: var(--color-gray-700);
   }
-  .bg-\[\#11111b\] {
-    background-color: #11111b;
+  .bg-gray-700 {
+    background-color: var(--color-gray-700);
   }
-  .bg-\[\#181825\] {
-    background-color: #181825;
+  .bg-gray-800 {
+    background-color: var(--color-gray-800);
   }
-  .bg-\[\#1e1e2e\] {
-    background-color: #1e1e2e;
+  .bg-gray-900 {
+    background-color: var(--color-gray-900);
   }
-  .bg-\[\#313244\] {
-    background-color: #313244;
+  .bg-gray-950 {
+    background-color: var(--color-gray-950);
   }
-  .bg-\[\#a6e3a1\] {
-    background-color: #a6e3a1;
+  .bg-green-400 {
+    background-color: var(--color-green-400);
   }
-  .bg-\[\#f9e2af\] {
-    background-color: #f9e2af;
+  .bg-red-400 {
+    background-color: var(--color-red-400);
   }
-  .bg-\[\#f38ba8\] {
-    background-color: #f38ba8;
+  .bg-yellow-400 {
+    background-color: var(--color-yellow-400);
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
@@ -727,20 +727,20 @@
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
   }
-  .text-\[\#89b4fa\] {
-    color: #89b4fa;
+  .text-blue-400 {
+    color: var(--color-blue-400);
   }
-  .text-\[\#11111b\] {
-    color: #11111b;
+  .text-gray-100 {
+    color: var(--color-gray-100);
   }
-  .text-\[\#a6e3a1\] {
-    color: #a6e3a1;
+  .text-gray-950 {
+    color: var(--color-gray-950);
   }
-  .text-\[\#cdd6f4\] {
-    color: #cdd6f4;
+  .text-green-400 {
+    color: var(--color-green-400);
   }
-  .text-\[\#f38ba8\] {
-    color: #f38ba8;
+  .text-red-400 {
+    color: var(--color-red-400);
   }
   .shadow-lg {
     --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -759,31 +759,31 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  .hover\:bg-\[\#313244\] {
+  .hover\:bg-gray-700 {
     &:hover {
       @media (hover: hover) {
-        background-color: #313244;
+        background-color: var(--color-gray-700);
       }
     }
   }
-  .hover\:bg-\[\#f5c2e7\] {
+  .hover\:bg-pink-400 {
     &:hover {
       @media (hover: hover) {
-        background-color: #f5c2e7;
+        background-color: var(--color-pink-400);
       }
     }
   }
-  .hover\:text-\[\#11111b\] {
+  .hover\:text-gray-950 {
     &:hover {
       @media (hover: hover) {
-        color: #11111b;
+        color: var(--color-gray-950);
       }
     }
   }
-  .hover\:text-\[\#f5c2e7\] {
+  .hover\:text-pink-400 {
     &:hover {
       @media (hover: hover) {
-        color: #f5c2e7;
+        color: var(--color-pink-400);
       }
     }
   }
@@ -793,9 +793,9 @@
       box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
     }
   }
-  .focus\:ring-\[\#89b4fa\] {
+  .focus\:ring-blue-400 {
     &:focus {
-      --tw-ring-color: #89b4fa;
+      --tw-ring-color: var(--color-blue-400);
     }
   }
   .focus\:outline-none {

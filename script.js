@@ -95,13 +95,13 @@ function setupEventListeners() {
   const boardConfigTextarea = document.getElementById("board-config");
   const saveStatus = document.getElementById("save-status");
   saveBoardConfig();
-  saveStatus.className = "w-2 h-2 rounded-full bg-[#f9e2af]";
+  saveStatus.className = "w-2 h-2 rounded-full bg-yellow-400";
   saveBoardConfig()
     .then(() => {
-      saveStatus.className = "w-2 h-2 rounded-full bg-[#a6e3a1]";
+      saveStatus.className = "w-2 h-2 rounded-full bg-green-400";
     })
     .catch(() => {
-      saveStatus.className = "w-2 h-2 rounded-full bg-[#f38ba8]";
+      saveStatus.className = "w-2 h-2 rounded-full bg-red-400";
     });
   boardConfigTextarea.addEventListener(
     "input",
@@ -242,27 +242,27 @@ function renderBoard() {
   boardData.columns.forEach((column, columnIndex) => {
     const columnElement = document.createElement("div");
     columnElement.className =
-      "min-w-[250px] bg-[#181825] rounded-md mr-4 flex flex-col text-sm h-full";
+      "min-w-[250px] bg-gray-800 rounded-md mr-4 flex flex-col text-sm h-full";
 
     const columnTitle = document.createElement("h2");
     columnTitle.className =
-      "p-3 m-0 rounded-t-md text-center font-bold text-[#11111b]";
+      "p-3 m-0 rounded-t-md text-center font-bold text-gray-950";
     columnTitle.textContent = column.name;
     columnTitle.style.backgroundColor = getColumnColor(columnIndex);
     columnElement.appendChild(columnTitle);
 
     const tasksContainer = document.createElement("div");
-    tasksContainer.className = "flex-1 p-2 overflow-y-auto bg-[#181825]";
+    tasksContainer.className = "flex-1 p-2 overflow-y-auto bg-gray-800";
     tasksContainer.addEventListener("dragover", dragOver);
     tasksContainer.addEventListener("drop", (e) => dropTask(e, columnIndex));
     columnElement.appendChild(tasksContainer);
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = `bg-[#1e1e2e] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#313244] ${
+      taskElement.className = `bg-gray-900 p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-gray-700 ${
         task.completed
-          ? "bg-[#a6e3a1] bg-opacity-20 text-[#1e1e2e]"
-          : "text-[#cdd6f4]"
+          ? "bg-green-400 bg-opacity-20 text-gray-950"
+          : "text-gray-100"
       }`;
       taskElement.draggable = true;
       taskElement.dataset.columnIndex = columnIndex;
@@ -274,7 +274,7 @@ function renderBoard() {
 
       if (task.completed) {
         const checkmark = document.createElement("i");
-        checkmark.className = "fas fa-check-circle mr-2 text-[#a6e3a1]";
+        checkmark.className = "fas fa-check-circle mr-2 text-green-400";
         taskContent.appendChild(checkmark);
       }
 
@@ -320,14 +320,14 @@ function updateBoardConfigText() {
 // Assign automatic colors to columns
 function getColumnColor(index) {
   const colors = [
-    "#f38ba8", // Red
-    "#fab387", // Peach
-    "#f9e2af", // Yellow
-    "#a6e3a1", // Green
-    "#89b4fa", // Blue
-    "#cba6f7", // Mauve
-    "#f5c2e7", // Pink
-    "#94e2d5", // Teal
+    "rgb(248 113 113)", // red-400
+    "rgb(251 146 60)", // orange-400
+    "rgb(250 204 21)", // yellow-400
+    "rgb(74 222 128)", // green-400
+    "rgb(96 165 250)", // blue-400
+    "rgb(192 132 252)", // purple-400
+    "rgb(244 114 182)", // pink-400
+    "rgb(45 212 191)", // teal-400
   ];
   return colors[index % colors.length];
 }
@@ -385,10 +385,10 @@ async function saveBoardConfig() {
       },
       body: new URLSearchParams({ config: configText }),
     });
-    saveStatus.className = "w-2 h-2 rounded-full bg-[#a6e3a1]";
+    saveStatus.className = "w-2 h-2 rounded-full bg-green-400";
   } catch (error) {
     console.error("Failed to save board configuration:", error);
-    saveStatus.className = "w-2 h-2 rounded-full bg-[#f38ba8]";
+    saveStatus.className = "w-2 h-2 rounded-full bg-red-400";
     throw error;
   }
 }
