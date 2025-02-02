@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Initialize board
     setupEventListeners();
     parseBoardConfig();
+    setupSplitter();
   } catch (error) {
     console.error("Failed to initialize board:", error);
     alert("Failed to load board. Please try refreshing the page.");
@@ -400,5 +401,45 @@ async function deleteBoard() {
     } catch (error) {
       console.error("Failed to delete board:", error);
     }
+  }
+}
+
+// Setup the splitter for resizing the sidebar
+function setupSplitter() {
+  const splitter = document.getElementById("splitter");
+  const sidebar = document.getElementById("sidebar");
+  let isDragging = false;
+
+  splitter.addEventListener("mousedown", function (e) {
+    e.preventDefault();
+    isDragging = true;
+    document.body.style.cursor = "col-resize";
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+  });
+
+  function onMouseMove(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    let newWidth = e.clientX;
+    const minWidth = 200;
+    const maxWidth = 500;
+    if (newWidth < minWidth) newWidth = minWidth;
+    if (newWidth > maxWidth) newWidth = maxWidth;
+
+    sidebar.style.width = newWidth + "px";
+  }
+
+  function onMouseUp(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    isDragging = false;
+    document.body.style.cursor = "default";
+
+    window.removeEventListener("mousemove", onMouseMove);
+    window.removeEventListener("mouseup", onMouseUp);
   }
 }
