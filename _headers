@@ -1,4 +1,5 @@
 /*
   Access-Control-Allow-Origin: https://tasks2.lkly.net
   Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
-  Access-Control-Allow-Headers: Content-Type, X-API-Key 
+  Access-Control-Allow-Headers: Content-Type, X-API-Key
+  Content-Security-Policy: default-src 'self' https://tasks-api.leefamous.workers.dev https://cdnjs.cloudflare.com https://use.typekit.net https://static.cloudflareinsights.com; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://use.typekit.net; font-src 'self' https://cdnjs.cloudflare.com https://use.typekit.net 

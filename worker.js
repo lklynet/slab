@@ -77,14 +77,14 @@ async function handleRequest(request, env) {
 
       if (results.length > 0) {
         return new Response(JSON.stringify({ config: results[0].config }), {
-          headers: {
-            ...baseHeaders,
-            "Access-Control-Allow-Origin": "https://tasks2.lkly.net",
-          },
+          headers: baseHeaders,
           status: 200,
         });
       } else {
-        return new Response("Board not found", { status: 404 });
+        return new Response("Board not found", {
+          status: 404,
+          headers: baseHeaders,
+        });
       }
     } else if (request.method === "POST") {
       const formData = await request.formData();

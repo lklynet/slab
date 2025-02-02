@@ -24,7 +24,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    // Otherwise load existing board
+    // Load existing board configuration
+    const response = await fetchAPI(path);
+    const data = await response.json();
+    if (data.config) {
+      const boardConfigTextarea = document.getElementById("board-config");
+      boardConfigTextarea.value = data.config;
+    }
+
+    // Initialize board
     setupEventListeners();
     parseBoardConfig();
     setupSplitter();
