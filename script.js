@@ -274,7 +274,7 @@ function renderBoard() {
 
       if (task.completed) {
         const checkmark = document.createElement("i");
-        checkmark.className = "fas fa-check-circle mr-2 text-green-400";
+        checkmark.className = "fas fa-check-circle mr-2 text-gray-950";
         taskContent.appendChild(checkmark);
       }
 
