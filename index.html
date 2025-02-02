@@ -38,6 +38,22 @@
         API_KEY: "__API_KEY__", // This will be replaced by Cloudflare Pages
       };
     </script>
+
+    <style>
+      .tooltip {
+        @apply invisible absolute bg-gray-950 text-xs p-2 rounded shadow-lg whitespace-nowrap z-20 
+               opacity-0 transition-all duration-200 pointer-events-none border border-gray-700;
+      }
+      .tooltip-bottom {
+        @apply -bottom-10 left-1/2 -translate-x-1/2;
+      }
+      .tooltip-right {
+        @apply top-1/2 left-full ml-2 -translate-y-1/2;
+      }
+      .group:hover .tooltip {
+        @apply visible opacity-100;
+      }
+    </style>
   </head>
   <body class="bg-gray-950 text-gray-100 font-mono">
     <!-- Main Container -->
@@ -63,10 +79,8 @@
               aria-controls="dropdown-menu"
             >
               ☰
-              <span
-                class="absolute hidden group-hover:block bg-gray-950 text-xs p-2 rounded shadow-lg -bottom-8 left-0 whitespace-nowrap"
-              >
-                Press Ctrl+N for new board
+              <span class="tooltip tooltip-bottom">
+                Menu (Ctrl+N for new board)
               </span>
             </button>
             <div
@@ -76,17 +90,19 @@
             >
               <button
                 id="start-new"
-                class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold group relative"
                 role="menuitem"
               >
                 Start New
+                <span class="tooltip tooltip-right">Ctrl+N</span>
               </button>
               <button
                 id="copy-link"
-                class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold group relative"
                 role="menuitem"
               >
-                Copy Link (Ctrl+Shift+C)
+                Copy Link
+                <span class="tooltip tooltip-right">Ctrl+Shift+C</span>
               </button>
               <button
                 id="delete-board"
@@ -102,19 +118,23 @@
           </div>
           <span
             id="save-status"
-            class="w-2 h-2 rounded-full bg-green-400 transition-colors"
+            class="w-2 h-2 rounded-full bg-green-400 transition-colors group relative"
             role="status"
             aria-label="Save status indicator"
-          ></span>
+          >
+            <span class="tooltip tooltip-bottom">Auto-saving enabled</span>
+          </span>
         </div>
 
         <!-- Config Textarea -->
         <textarea
           id="board-config"
-          class="flex-1 w-full resize-none border-0 p-4 bg-gray-950 text-gray-100 text-sm mb-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
-          placeholder="Enter board configuration... (Ctrl+/ to focus)"
+          class="flex-1 w-full resize-none border-0 p-4 bg-gray-950 text-gray-100 text-sm mb-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 group relative"
+          placeholder="Enter board configuration..."
           aria-label="Board configuration"
-        ></textarea>
+        >
+          <span class="tooltip tooltip-bottom">Press Ctrl+/ to focus</span>
+        </textarea>
 
         <!-- Sidebar Buttons -->
         <div class="flex gap-2 p-2">
@@ -123,22 +143,14 @@
             class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400 group relative"
           >
             <i class="fas fa-plus-square mr-2" aria-hidden="true"></i>Add Column
-            <span
-              class="absolute hidden group-hover:block bg-gray-950 text-xs p-2 rounded shadow-lg -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
-            >
-              Press Ctrl+B
-            </span>
+            <span class="tooltip tooltip-bottom">Press Ctrl+B</span>
           </button>
           <button
             id="add-item"
             class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400 group relative"
           >
             <i class="fas fa-plus mr-2" aria-hidden="true"></i>Add Item
-            <span
-              class="absolute hidden group-hover:block bg-gray-950 text-xs p-2 rounded shadow-lg -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
-            >
-              Press Ctrl+T
-            </span>
+            <span class="tooltip tooltip-bottom">Press Ctrl+T</span>
           </button>
         </div>
       </div>
@@ -146,10 +158,12 @@
       <!-- Splitter -->
       <div
         id="splitter"
-        class="w-2.5 bg-gray-800 cursor-col-resize hover:bg-gray-700 transition-colors"
+        class="w-2.5 bg-gray-800 cursor-col-resize hover:bg-gray-700 transition-colors group relative"
         role="separator"
         aria-label="Resize sidebar"
-      ></div>
+      >
+        <span class="tooltip tooltip-bottom">Drag to resize</span>
+      </div>
 
       <!-- Board Container -->
       <div
