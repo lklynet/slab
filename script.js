@@ -95,13 +95,13 @@ function setupEventListeners() {
   const boardConfigTextarea = document.getElementById("board-config");
   const saveStatus = document.getElementById("save-status");
   saveBoardConfig();
-  saveStatus.style.backgroundColor = "var(--save-yellow)";
+  saveStatus.className = "w-2 h-2 rounded-full bg-accent-yellow";
   saveBoardConfig()
     .then(() => {
-      saveStatus.style.backgroundColor = "var(--save-green)";
+      saveStatus.className = "w-2 h-2 rounded-full bg-accent-green";
     })
     .catch(() => {
-      saveStatus.style.backgroundColor = "var(--save-red)";
+      saveStatus.className = "w-2 h-2 rounded-full bg-accent-red";
     });
   boardConfigTextarea.addEventListener(
     "input",
@@ -383,10 +383,10 @@ async function saveBoardConfig() {
       },
       body: new URLSearchParams({ config: configText }),
     });
-    saveStatus.style.backgroundColor = "var(--save-green)";
+    saveStatus.className = "w-2 h-2 rounded-full bg-accent-green";
   } catch (error) {
     console.error("Failed to save board configuration:", error);
-    saveStatus.style.backgroundColor = "var(--save-red)";
+    saveStatus.className = "w-2 h-2 rounded-full bg-accent-red";
     throw error;
   }
 }
