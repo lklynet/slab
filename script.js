@@ -10,17 +10,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const response = await fetchAPI("/");
       const data = await response.json();
-      window.location.href = `/${data.boardId}`;
-      return;
+      if (data.boardId) {
+        window.location.href = `/${data.boardId}`;
+        return;
+      }
+      throw new Error("No boardId received");
     } catch (error) {
       console.error("Failed to create new board:", error);
+      // Show user-friendly error message
+      alert("Failed to create new board. Please try again.");
+      return;
     }
   }
 
-  // Otherwise load existing board
-  setupEventListeners();
-  parseBoardConfig();
-  setupSplitter();
+  try {
+    // Otherwise load existing board
+    setupEventListeners();
+    parseBoardConfig();
+    setupSplitter();
+  } catch (error) {
+    console.error("Failed to initialize board:", error);
+    alert("Failed to load board. Please try refreshing the page.");
+  }
 });
 
 let boardData = {};
@@ -30,19 +41,26 @@ let isProgrammaticChange = false;
 async function fetchAPI(endpoint, options = {}) {
   const headers = {
     "X-API-Key": API_KEY,
+    "Content-Type": "application/json",
     ...options.headers,
   };
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      headers,
+      credentials: "include",
+    });
 
-  if (!response.ok) {
-    throw new Error(`API call failed: ${response.statusText}`);
+    if (!response.ok) {
+      throw new Error(`API call failed: ${response.statusText}`);
+    }
+
+    return response;
+  } catch (error) {
+    console.error("API call failed:", error);
+    throw error;
   }
-
-  return response;
 }
 
 // Debounce function

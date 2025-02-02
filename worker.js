@@ -5,11 +5,12 @@ export default {
 };
 
 async function handleRequest(request, env) {
-  // Add CORS headers
+  // Update CORS headers
   const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "https://tasks2.lkly.net", // Your frontend domain
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
+    "Access-Control-Max-Age": "86400", // 24 hours
   };
 
   // Handle CORS preflight
@@ -68,7 +69,10 @@ async function handleRequest(request, env) {
 
       if (results.length > 0) {
         return new Response(JSON.stringify({ config: results[0].config }), {
-          headers: baseHeaders,
+          headers: {
+            ...baseHeaders,
+            "Access-Control-Allow-Origin": "https://tasks2.lkly.net",
+          },
           status: 200,
         });
       } else {
