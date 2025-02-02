@@ -57,12 +57,17 @@
           <div class="relative">
             <button
               id="menu-button"
-              class="text-2xl cursor-pointer select-none hover:text-pink-400 transition-colors"
+              class="text-2xl cursor-pointer select-none hover:text-pink-400 transition-colors group"
               aria-label="Menu"
               aria-expanded="false"
               aria-controls="dropdown-menu"
             >
               ☰
+              <span
+                class="absolute hidden group-hover:block bg-gray-950 text-xs p-2 rounded shadow-lg -bottom-8 left-0 whitespace-nowrap"
+              >
+                Press Ctrl+N for new board
+              </span>
             </button>
             <div
               id="dropdown-menu"
@@ -81,7 +86,7 @@
                 class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold"
                 role="menuitem"
               >
-                Copy Link
+                Copy Link (Ctrl+Shift+C)
               </button>
               <button
                 id="delete-board"
@@ -97,7 +102,7 @@
           </div>
           <span
             id="save-status"
-            class="w-2 h-2 rounded-full bg-green-400"
+            class="w-2 h-2 rounded-full bg-green-400 transition-colors"
             role="status"
             aria-label="Save status indicator"
           ></span>
@@ -107,7 +112,7 @@
         <textarea
           id="board-config"
           class="flex-1 w-full resize-none border-0 p-4 bg-gray-950 text-gray-100 text-sm mb-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
-          placeholder="Enter board configuration..."
+          placeholder="Enter board configuration... (Ctrl+/ to focus)"
           aria-label="Board configuration"
         ></textarea>
 
@@ -115,15 +120,25 @@
         <div class="flex gap-2 p-2">
           <button
             id="add-column"
-            class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400"
+            class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400 group relative"
           >
             <i class="fas fa-plus-square mr-2" aria-hidden="true"></i>Add Column
+            <span
+              class="absolute hidden group-hover:block bg-gray-950 text-xs p-2 rounded shadow-lg -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
+            >
+              Press Ctrl+B
+            </span>
           </button>
           <button
             id="add-item"
-            class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400"
+            class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400 group relative"
           >
             <i class="fas fa-plus mr-2" aria-hidden="true"></i>Add Item
+            <span
+              class="absolute hidden group-hover:block bg-gray-950 text-xs p-2 rounded shadow-lg -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
+            >
+              Press Ctrl+T
+            </span>
           </button>
         </div>
       </div>

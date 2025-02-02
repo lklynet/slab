@@ -110,6 +110,38 @@ function setupEventListeners() {
     }, 500)
   );
 
+  // Add keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    // Only handle keyboard shortcuts when not typing in textarea
+    if (e.target.tagName === "TEXTAREA") return;
+
+    // Ctrl/Cmd + / to focus config
+    if ((e.ctrlKey || e.metaKey) && e.key === "/") {
+      e.preventDefault();
+      boardConfigTextarea.focus();
+    }
+    // Ctrl/Cmd + n for new board
+    if ((e.ctrlKey || e.metaKey) && e.key === "n") {
+      e.preventDefault();
+      startNewBoard();
+    }
+    // Ctrl/Cmd + c to copy link
+    if ((e.ctrlKey || e.metaKey) && e.key === "c" && e.shiftKey) {
+      e.preventDefault();
+      copyLink();
+    }
+    // Ctrl/Cmd + b to add column
+    if ((e.ctrlKey || e.metaKey) && e.key === "b") {
+      e.preventDefault();
+      document.getElementById("add-column").click();
+    }
+    // Ctrl/Cmd + t to add task
+    if ((e.ctrlKey || e.metaKey) && e.key === "t") {
+      e.preventDefault();
+      document.getElementById("add-item").click();
+    }
+  });
+
   document.getElementById("add-column").addEventListener("click", () => {
     const boardConfigTextarea = document.getElementById("board-config");
     boardConfigTextarea.value += "\n/ New Column";
