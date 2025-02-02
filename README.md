@@ -1,35 +1,19 @@
 # Tasks - LKLY.net
 
-A minimalist, keyboard-driven Kanban board application built with modern web technologies. Part of the LKLY.net suite of developer tools.
+A minimalist, high-performance Kanban board built with modern web technologies. Part of the LKLY.net suite of developer tools.
 
 ## Features
 
-### Core Functionality
-
-- Clean, minimalist interface with dark theme
-- Real-time board updates with auto-saving
-- Drag-and-drop task management
-- Resizable sidebar with configuration editor
-- Shareable board URLs
-- Mobile-responsive design
-
-### Keyboard Shortcuts
-
-- `Ctrl/Cmd + /` - Focus configuration editor
-- `Ctrl/Cmd + N` - Create new board
-- `Ctrl/Cmd + Shift + C` - Copy board link
-- `Ctrl/Cmd + B` - Add new column
-- `Ctrl/Cmd + T` - Add new task
-- `Enter/Space` - Toggle task completion
-
-### Accessibility
-
-- Full keyboard navigation support
-- ARIA labels and roles
-- Screen reader friendly
-- High contrast color scheme
-- Focus management
-- Semantic HTML structure
+- 🚀 Blazing fast, static-first architecture
+- 🎯 Clean, minimalist interface
+- 🔄 Real-time board updates with optimistic UI
+- 🔗 Shareable board URLs
+- 🎨 Automatic column colorization
+- 📱 Mobile-responsive design
+- ⌨️ Full keyboard navigation support
+- ♿ WCAG accessibility compliant
+- 🔍 SEO optimized
+- 🌓 Dark theme by default
 
 ## Tech Stack
 
@@ -47,13 +31,6 @@ A minimalist, keyboard-driven Kanban board application built with modern web tec
 - Cloudflare KV for data storage
 - Cloudflare Pages for static hosting
 
-### Performance
-
-- Static site generation
-- Edge-first architecture
-- Minimal JavaScript footprint
-- Optimized for Cloudflare's global network
-
 ## Development
 
 1. Clone the repository:
@@ -68,79 +45,83 @@ cd tasks
 - Connect your GitHub repository
 - Set the build command to: (none)
 - Set the build output directory to: .
-- Add environment variable: `API_KEY`
+- Add environment variable:
+  - `API_KEY`: Your chosen API key for backend access
 
 3. Create a Cloudflare Worker:
 
 - Copy the contents of `worker.js` to a new Cloudflare Worker
 - Create a new KV namespace called `TASKS_DB`
-- Bind the KV namespace to your worker with variable name `TASKS_DB`
+- Bind the KV namespace to your worker with the variable name `TASKS_DB`
+- Add environment variable:
+  - `API_KEY`: Same value as used in Pages
 
 4. Configure your domain:
 
-- Add `tasks.lkly.net` to your Cloudflare DNS
+- Add your domain to Cloudflare DNS
 - Point it to your Cloudflare Pages deployment
 - Add a route pattern for `/api/*` to your Worker
 
-## Configuration Format
+## Features
 
-The board configuration uses a simple text format:
+### Board Configuration
 
-```
-Board Name
-/ Column Name
-@ Task 1
-completed: true
-@ Task 2
-/ Another Column
-@ Task 3
-```
+- Text-based configuration for easy editing
+- Real-time preview of changes
+- Automatic saving with status indicator
+
+### Task Management
+
+- Drag and drop tasks between columns
+- Click to mark tasks as complete
+- Keyboard navigation support
+- Visual feedback for task status
+
+### Column Management
+
+- Add/remove columns easily
+- Automatic color assignment
+- Resizable sidebar for configuration
+
+### Sharing & Collaboration
+
+- Unique URL for each board
+- Easy link copying
+- Real-time updates
+
+## Performance
+
+The application is optimized for performance:
+
+- Static asset delivery through Cloudflare's edge network
+- Minimal JavaScript footprint
+- No external dependencies
+- Efficient DOM updates
+- Optimized for Core Web Vitals
 
 ## Security
 
-- API key authentication required
-- CORS protection enabled
-- Rate limiting on the API
-- No sensitive data stored
-- All data encrypted at rest
+- API key authentication for all requests
+- CORS protection
+- No sensitive data in client-side code
+- Cloudflare's security features by default
 
 ## Browser Support
+
+Supports all modern browsers:
 
 - Chrome/Edge (latest)
 - Firefox (latest)
 - Safari (latest)
-- Mobile browsers supported
-
-## Environment Setup
-
-Required environment variables for the Worker:
-
-```env
-TASKS_DB=your-kv-namespace-binding
-```
-
-## Deployment
-
-The project is automatically deployed through Cloudflare Pages when changes are pushed to the main branch.
-
-1. Static site (Cloudflare Pages):
-
-   - Automatically deploys from the main branch
-   - No build step required
-   - Serves static assets and handles client-side routing
-
-2. API (Cloudflare Worker):
-   - Deploy through Cloudflare Dashboard or Wrangler
-   - Ensure KV namespace is properly bound
-   - Route pattern: `tasks.lkly.net/api/*`
+- Mobile browsers
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Commit your changes: `git commit -m '[Feature] Add some feature'`
-4. Push to the branch: `git push origin feature/my-feature`
-5. Submit a Pull Request
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
