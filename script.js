@@ -137,13 +137,13 @@ function setupEventListeners() {
 
   menuButton.addEventListener("click", (event) => {
     event.stopPropagation();
-    dropdownMenu.classList.toggle("show");
+    dropdownMenu.classList.toggle("hidden");
   });
 
   // Close menu when clicking outside
   document.addEventListener("click", (event) => {
     if (!menuButton.contains(event.target)) {
-      dropdownMenu.classList.remove("show");
+      dropdownMenu.classList.add("hidden");
     }
   });
 }
