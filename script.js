@@ -241,36 +241,37 @@ function renderBoard() {
 
   boardData.columns.forEach((column, columnIndex) => {
     const columnElement = document.createElement("div");
-    columnElement.className = "column";
+    columnElement.className =
+      "min-w-[250px] bg-menu-bg rounded-md mr-4 flex flex-col text-sm";
 
     const columnTitle = document.createElement("h2");
+    columnTitle.className = "p-3 m-0 rounded-t-md text-center font-bold";
     columnTitle.textContent = column.name;
     columnTitle.style.backgroundColor = getColumnColor(columnIndex);
     columnElement.appendChild(columnTitle);
 
     const tasksContainer = document.createElement("div");
-    tasksContainer.className = "tasks";
+    tasksContainer.className = "flex-1 p-2 overflow-y-auto";
     tasksContainer.addEventListener("dragover", dragOver);
     tasksContainer.addEventListener("drop", (e) => dropTask(e, columnIndex));
     columnElement.appendChild(tasksContainer);
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = "task";
-      if (task.completed) {
-        taskElement.classList.add("completed");
-      }
+      taskElement.className = `bg-border-color p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-highlight ${
+        task.completed ? "bg-green-800 bg-opacity-80 text-white" : ""
+      }`;
       taskElement.draggable = true;
       taskElement.dataset.columnIndex = columnIndex;
       taskElement.dataset.taskIndex = taskIndex;
       taskElement.addEventListener("dragstart", dragStart);
 
       const taskContent = document.createElement("div");
-      taskContent.className = "task-content";
+      taskContent.className = "flex items-center";
 
       if (task.completed) {
         const checkmark = document.createElement("i");
-        checkmark.className = "fas fa-check-circle checkmark";
+        checkmark.className = "fas fa-check-circle mr-2 text-white";
         taskContent.appendChild(checkmark);
       }
 
