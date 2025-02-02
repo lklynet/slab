@@ -95,13 +95,13 @@ function setupEventListeners() {
   const boardConfigTextarea = document.getElementById("board-config");
   const saveStatus = document.getElementById("save-status");
   saveBoardConfig();
-  saveStatus.className = "w-2 h-2 rounded-full bg-accent-yellow";
+  saveStatus.className = "w-2 h-2 rounded-full bg-[#f9e2af]";
   saveBoardConfig()
     .then(() => {
-      saveStatus.className = "w-2 h-2 rounded-full bg-accent-green";
+      saveStatus.className = "w-2 h-2 rounded-full bg-[#a6e3a1]";
     })
     .catch(() => {
-      saveStatus.className = "w-2 h-2 rounded-full bg-accent-red";
+      saveStatus.className = "w-2 h-2 rounded-full bg-[#f38ba8]";
     });
   boardConfigTextarea.addEventListener(
     "input",
@@ -242,7 +242,7 @@ function renderBoard() {
   boardData.columns.forEach((column, columnIndex) => {
     const columnElement = document.createElement("div");
     columnElement.className =
-      "min-w-[250px] bg-menu-bg rounded-md mr-4 flex flex-col text-sm";
+      "min-w-[250px] bg-[#313244] rounded-md mr-4 flex flex-col text-sm";
 
     const columnTitle = document.createElement("h2");
     columnTitle.className = "p-3 m-0 rounded-t-md text-center font-bold";
@@ -258,8 +258,8 @@ function renderBoard() {
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = `bg-dark-border p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-accent-highlight ${
-        task.completed ? "bg-green-800 bg-opacity-80 text-white" : ""
+      taskElement.className = `bg-[#11111b] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#f5c2e7] hover:text-[#11111b] ${
+        task.completed ? "bg-[#a6e3a1] bg-opacity-20 text-[#a6e3a1]" : ""
       }`;
       taskElement.draggable = true;
       taskElement.dataset.columnIndex = columnIndex;
@@ -318,14 +318,14 @@ function updateBoardConfigText() {
 // Assign automatic colors to columns
 function getColumnColor(index) {
   const colors = [
-    "#EF476F",
-    "#FFD166",
-    "#06D6A0",
-    "#118AB2",
-    "#073B4C",
-    "#fb8500",
-    "#7209b7",
-    "#9381ff",
+    "#f38ba8", // Red
+    "#fab387", // Peach
+    "#f9e2af", // Yellow
+    "#a6e3a1", // Green
+    "#89b4fa", // Blue
+    "#cba6f7", // Mauve
+    "#f5c2e7", // Pink
+    "#94e2d5", // Teal
   ];
   return colors[index % colors.length];
 }
@@ -383,10 +383,10 @@ async function saveBoardConfig() {
       },
       body: new URLSearchParams({ config: configText }),
     });
-    saveStatus.className = "w-2 h-2 rounded-full bg-accent-green";
+    saveStatus.className = "w-2 h-2 rounded-full bg-[#a6e3a1]";
   } catch (error) {
     console.error("Failed to save board configuration:", error);
-    saveStatus.className = "w-2 h-2 rounded-full bg-accent-red";
+    saveStatus.className = "w-2 h-2 rounded-full bg-[#f38ba8]";
     throw error;
   }
 }
