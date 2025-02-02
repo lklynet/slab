@@ -242,24 +242,27 @@ function renderBoard() {
   boardData.columns.forEach((column, columnIndex) => {
     const columnElement = document.createElement("div");
     columnElement.className =
-      "min-w-[250px] bg-[#313244] rounded-md mr-4 flex flex-col text-sm";
+      "min-w-[250px] bg-[#313244] rounded-md mr-4 flex flex-col text-sm h-full";
 
     const columnTitle = document.createElement("h2");
-    columnTitle.className = "p-3 m-0 rounded-t-md text-center font-bold";
+    columnTitle.className =
+      "p-3 m-0 rounded-t-md text-center font-bold text-[#cdd6f4]";
     columnTitle.textContent = column.name;
     columnTitle.style.backgroundColor = getColumnColor(columnIndex);
     columnElement.appendChild(columnTitle);
 
     const tasksContainer = document.createElement("div");
-    tasksContainer.className = "flex-1 p-2 overflow-y-auto";
+    tasksContainer.className = "flex-1 p-2 overflow-y-auto bg-[#1e1e2e]";
     tasksContainer.addEventListener("dragover", dragOver);
     tasksContainer.addEventListener("drop", (e) => dropTask(e, columnIndex));
     columnElement.appendChild(tasksContainer);
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = `bg-[#11111b] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#f5c2e7] hover:text-[#11111b] ${
-        task.completed ? "bg-[#a6e3a1] bg-opacity-20 text-[#a6e3a1]" : ""
+      taskElement.className = `bg-[#313244] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#45475a] ${
+        task.completed
+          ? "bg-[#a6e3a1] bg-opacity-20 text-[#a6e3a1]"
+          : "text-[#cdd6f4]"
       }`;
       taskElement.draggable = true;
       taskElement.dataset.columnIndex = columnIndex;
@@ -271,7 +274,7 @@ function renderBoard() {
 
       if (task.completed) {
         const checkmark = document.createElement("i");
-        checkmark.className = "fas fa-check-circle mr-2 text-white";
+        checkmark.className = "fas fa-check-circle mr-2 text-[#a6e3a1]";
         taskContent.appendChild(checkmark);
       }
 
@@ -280,7 +283,6 @@ function renderBoard() {
       taskContent.appendChild(taskText);
 
       taskElement.appendChild(taskContent);
-
       taskElement.addEventListener("click", () =>
         toggleTaskCompletion(columnIndex, taskIndex)
       );
