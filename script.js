@@ -258,7 +258,7 @@ function renderBoard() {
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = `bg-border-color p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-highlight ${
+      taskElement.className = `bg-dark-border p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-accent-highlight ${
         task.completed ? "bg-green-800 bg-opacity-80 text-white" : ""
       }`;
       taskElement.draggable = true;

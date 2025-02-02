@@ -9,20 +9,23 @@
     <link href="./src/output.css" rel="stylesheet" />
     <script>
       tailwind.config = {
-        darkMode: "class",
         theme: {
           extend: {
             colors: {
-              "board-bg": "#0d0d0d",
-              "board-text": "#e6e6e6",
-              "sidebar-bg": "#1a1a1a",
-              "menu-bg": "#262626",
-              "menu-hover": "#333333",
-              "border-color": "#404040",
-              highlight: "#ff6347",
-              "save-green": "#32cd32",
-              "save-yellow": "#ffd700",
-              "save-red": "#ff4500",
+              dark: {
+                bg: "#0d0d0d",
+                text: "#e6e6e6",
+                sidebar: "#1a1a1a",
+                menu: "#262626",
+                hover: "#333333",
+                border: "#404040",
+              },
+              accent: {
+                highlight: "#ff6347",
+                green: "#32cd32",
+                yellow: "#ffd700",
+                red: "#ff4500",
+              },
             },
           },
         },
@@ -43,42 +46,42 @@
       };
     </script>
   </head>
-  <body class="bg-board-bg text-board-text">
+  <body class="bg-dark-bg text-dark-text font-mono">
     <!-- Main Container -->
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
       <div
         id="sidebar"
-        class="w-[280px] min-w-[180px] max-w-[450px] bg-sidebar-bg flex flex-col overflow-hidden resize-x p-4"
+        class="w-[280px] min-w-[180px] max-w-[450px] bg-dark-sidebar flex flex-col overflow-hidden resize-x p-4"
       >
         <!-- Header -->
         <div class="flex items-center p-2 mb-4">
           <div class="relative">
             <button
               id="menu-button"
-              class="text-2xl cursor-pointer select-none"
+              class="text-2xl cursor-pointer select-none hover:text-accent-highlight transition-colors"
             >
               ☰
             </button>
             <div
               id="dropdown-menu"
-              class="hidden absolute top-8 left-0 bg-menu-bg border border-border-color z-10 w-48"
+              class="hidden absolute top-8 left-0 bg-dark-menu border border-dark-border z-10 w-48"
             >
               <button
                 id="start-new"
-                class="w-full px-3 py-2 text-left hover:bg-menu-hover text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-dark-hover text-sm font-bold"
               >
                 Start New
               </button>
               <button
                 id="copy-link"
-                class="w-full px-3 py-2 text-left hover:bg-menu-hover text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-dark-hover text-sm font-bold"
               >
                 Copy Link
               </button>
               <button
                 id="delete-board"
-                class="w-full px-3 py-2 text-left hover:bg-menu-hover text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-dark-hover text-sm font-bold"
               >
                 Delete
               </button>
@@ -87,14 +90,14 @@
           <div class="flex-1 text-center text-lg font-bold">[>_ ] lkly.net</div>
           <span
             id="save-status"
-            class="w-2 h-2 rounded-full bg-save-green"
+            class="w-2 h-2 rounded-full bg-accent-green"
           ></span>
         </div>
 
         <!-- Config Textarea -->
         <textarea
           id="board-config"
-          class="flex-1 w-full resize-none border-0 p-4 bg-board-bg text-board-text text-sm mb-4"
+          class="flex-1 w-full resize-none border-0 p-4 bg-dark-bg text-dark-text text-sm mb-4 focus:outline-none focus:ring-1 focus:ring-accent-highlight"
           placeholder="Enter board configuration..."
         ></textarea>
 
@@ -102,13 +105,13 @@
         <div class="flex gap-2 p-2">
           <button
             id="add-column"
-            class="flex-1 p-2 bg-menu-bg hover:bg-highlight text-sm font-bold rounded transition-colors"
+            class="flex-1 p-2 bg-dark-menu hover:bg-accent-highlight text-sm font-bold rounded transition-colors"
           >
             <i class="fas fa-plus-square mr-2"></i>Add Column
           </button>
           <button
             id="add-item"
-            class="flex-1 p-2 bg-menu-bg hover:bg-highlight text-sm font-bold rounded transition-colors"
+            class="flex-1 p-2 bg-dark-menu hover:bg-accent-highlight text-sm font-bold rounded transition-colors"
           >
             <i class="fas fa-plus mr-2"></i>Add Item
           </button>
@@ -116,7 +119,7 @@
       </div>
 
       <!-- Splitter -->
-      <div id="splitter" class="w-2.5 bg-sidebar-bg cursor-col-resize"></div>
+      <div id="splitter" class="w-2.5 bg-dark-sidebar cursor-col-resize"></div>
 
       <!-- Board Container -->
       <div
