@@ -75,6 +75,14 @@
         word-break: break-word;
       }
     </style>
+
+    <script src="https://post.lkly.net/inject.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="https://use.typekit.net/bop8ekr.css" />
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   </head>
   <body
     class="bg-dark text-gray-100 font-mono min-h-screen"
@@ -256,29 +264,10 @@
     </div>
 
     <script>
+      const API_KEY = "your-api-key-here"; // Replace with environment variable
+      const API_URL = "your-worker-url-here"; // Replace with your worker URL
+
       function boardData() {
-        const API_URL = "https://tasks-api.leefamous.workers.dev";
-        const API_KEY = "YOUR-API-KEY-HERE"; // This will be replaced with an environment variable
-
-        // Helper function for API calls
-        async function fetchAPI(endpoint, options = {}) {
-          const headers = {
-            "X-API-Key": API_KEY,
-            ...options.headers,
-          };
-
-          const response = await fetch(`${API_URL}${endpoint}`, {
-            ...options,
-            headers,
-          });
-
-          if (!response.ok) {
-            throw new Error(`API call failed: ${response.statusText}`);
-          }
-
-          return response;
-        }
-
         return {
           boardId: null,
           boardTitle: "Untitled Board",
@@ -299,7 +288,7 @@
 
           async loadBoard() {
             try {
-              const response = await fetchAPI(`/board/${this.boardId}`);
+              const response = await fetch(`${API_URL}/board/${this.boardId}`);
               const data = await response.json();
               this.boardTitle = data.title;
               this.columns = data.columns;
@@ -310,7 +299,7 @@
 
           async createNewBoard() {
             try {
-              const response = await fetchAPI("/board", {
+              const response = await fetch(`${API_URL}/board`, {
                 method: "POST",
               });
               const data = await response.json();
@@ -322,7 +311,7 @@
 
           async saveBoard() {
             try {
-              await fetchAPI(`/board/${this.boardId}`, {
+              const response = await fetch(`${API_URL}/board/${this.boardId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -330,6 +319,7 @@
                   columns: this.columns,
                 }),
               });
+              if (!response.ok) throw new Error("Failed to save board");
             } catch (error) {
               console.error("Failed to save board:", error);
             }
@@ -392,6 +382,44 @@
             document.execCommand("copy");
           },
         };
+      }
+
+      async function saveBoardConfig() {
+        const configText = document.getElementById("board-config").value;
+        const saveStatus = document.getElementById("save-status");
+
+        try {
+          const response = await fetch(window.location.pathname, {
+            method: "POST",
+            headers: {
+              "X-API-Key": API_KEY,
+            },
+            body: new URLSearchParams({ config: configText }),
+          });
+
+          if (!response.ok) throw new Error("Failed to save");
+          saveStatus.style.backgroundColor = "var(--save-green)";
+        } catch (error) {
+          console.error("Failed to save board configuration:", error);
+          saveStatus.style.backgroundColor = "var(--save-red)";
+          throw error;
+        }
+      }
+
+      async function startNewBoard() {
+        if (confirm("Are you sure you want to start a new board?")) {
+          try {
+            const response = await fetch(API_URL, {
+              headers: {
+                "X-API-Key": API_KEY,
+              },
+            });
+            const data = await response.json();
+            window.location.href = `/${data.boardId}`;
+          } catch (error) {
+            console.error("Failed to create new board:", error);
+          }
+        }
       }
     </script>
   </body>
