@@ -1,11 +1,42 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const origin = request.headers.get("Origin") || "";
+
+    // List of allowed origins
+    const ALLOWED_ORIGINS = [
+      "https://tasks.lkly.net",
+      "https://lkly.net",
+      // Add any other domains you want to allow
+    ];
+
+    // Check if the origin is allowed
+    const isAllowedOrigin = ALLOWED_ORIGINS.includes(origin) || origin === "";
+    const corsHeaders = {
+      "Access-Control-Allow-Origin": isAllowedOrigin ? origin : "",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
+    };
+
+    // Handle CORS preflight requests
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    // Validate API key for non-OPTIONS requests
+    const apiKey = request.headers.get("X-API-Key");
+    if (!isValidApiKey(apiKey, env)) {
+      return new Response("Unauthorized", {
+        status: 401,
+        headers: corsHeaders,
+      });
+    }
+
     const path = url.pathname;
 
-    // API routes
-    if (path.startsWith("/api/")) {
-      return handleApi(request, env);
+    // Handle board operations
+    if (path.startsWith("/board")) {
+      return handleApi(request, env, corsHeaders);
     }
 
     // Root path creates a new board
@@ -13,23 +44,29 @@ export default {
       const boardId = generateBoardId();
       const timestamp = Math.floor(Date.now() / 1000);
 
-      // Create board in original format
       const defaultConfig = `My Kanban Board
 /To Do
 /Doing
 /Done`;
 
       try {
-        // Store using original DB format
         await env.KANBAN_DB.prepare(
           "INSERT INTO boards (id, config, created_at) VALUES (?, ?, ?)"
         )
           .bind(boardId, defaultConfig, timestamp)
           .run();
 
-        return Response.redirect(`${url.origin}/${boardId}`, 302);
+        return new Response(JSON.stringify({ boardId }), {
+          headers: {
+            "Content-Type": "application/json",
+            ...corsHeaders,
+          },
+        });
       } catch (error) {
-        return new Response("Failed to create board", { status: 500 });
+        return new Response("Failed to create board", {
+          status: 500,
+          headers: corsHeaders,
+        });
       }
     }
 
@@ -47,30 +84,33 @@ export default {
   },
 };
 
-async function handleApi(request, env) {
+async function handleApi(request, env, corsHeaders) {
   const url = new URL(request.url);
   const path = url.pathname;
   const method = request.method;
 
   // Extract board ID from path
-  const boardMatch = path.match(/^\/api\/board\/([^\/]+)/);
+  const boardMatch = path.match(/^\/board\/([^\/]+)/);
   const boardId = boardMatch ? boardMatch[1] : null;
 
   // Board operations
-  if (path === "/api/board" && method === "POST") {
-    return handleCreateBoard(env, url);
+  if (path === "/board" && method === "POST") {
+    return handleCreateBoard(env, url, corsHeaders);
   } else if (boardId && method === "GET") {
-    return handleGetBoard(boardId, env);
+    return handleGetBoard(boardId, env, corsHeaders);
   } else if (boardId && method === "PUT") {
-    return handleUpdateBoard(boardId, request, env);
+    return handleUpdateBoard(boardId, request, env, corsHeaders);
   } else if (boardId && method === "DELETE") {
-    return handleDeleteBoard(boardId, env, url);
+    return handleDeleteBoard(boardId, env, url, corsHeaders);
   }
 
-  return new Response("Not found", { status: 404 });
+  return new Response("Not found", {
+    status: 404,
+    headers: corsHeaders,
+  });
 }
 
-async function handleCreateBoard(env, url) {
+async function handleCreateBoard(env, url, corsHeaders) {
   const boardId = generateBoardId();
   const timestamp = Math.floor(Date.now() / 1000);
   const defaultConfig = `My Kanban Board
@@ -86,14 +126,20 @@ async function handleCreateBoard(env, url) {
       .run();
 
     return new Response(JSON.stringify({ boardId }), {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
     });
   } catch (error) {
-    return new Response("Failed to create board", { status: 500 });
+    return new Response("Failed to create board", {
+      status: 500,
+      headers: corsHeaders,
+    });
   }
 }
 
-async function handleGetBoard(boardId, env) {
+async function handleGetBoard(boardId, env, corsHeaders) {
   try {
     // Try to get board from original DB
     const { results } = await env.KANBAN_DB.prepare(
@@ -103,7 +149,10 @@ async function handleGetBoard(boardId, env) {
       .all();
 
     if (results.length === 0) {
-      return new Response("Board not found", { status: 404 });
+      return new Response("Board not found", {
+        status: 404,
+        headers: corsHeaders,
+      });
     }
 
     const boardConfig = results[0].config;
@@ -129,14 +178,20 @@ async function handleGetBoard(boardId, env) {
     };
 
     return new Response(JSON.stringify(board), {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
     });
   } catch (error) {
-    return new Response("Failed to get board", { status: 500 });
+    return new Response("Failed to get board", {
+      status: 500,
+      headers: corsHeaders,
+    });
   }
 }
 
-async function handleUpdateBoard(boardId, request, env) {
+async function handleUpdateBoard(boardId, request, env, corsHeaders) {
   try {
     // Check if board exists
     const { results } = await env.KANBAN_DB.prepare(
@@ -146,7 +201,10 @@ async function handleUpdateBoard(boardId, request, env) {
       .all();
 
     if (results.length === 0) {
-      return new Response("Board not found", { status: 404 });
+      return new Response("Board not found", {
+        status: 404,
+        headers: corsHeaders,
+      });
     }
 
     const updates = await request.json();
@@ -163,25 +221,46 @@ async function handleUpdateBoard(boardId, request, env) {
       .run();
 
     return new Response(JSON.stringify(updates), {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...corsHeaders,
+      },
     });
   } catch (error) {
-    return new Response("Failed to update board", { status: 500 });
+    return new Response("Failed to update board", {
+      status: 500,
+      headers: corsHeaders,
+    });
   }
 }
 
-async function handleDeleteBoard(boardId, env, url) {
+async function handleDeleteBoard(boardId, env, url, corsHeaders) {
   try {
     await env.KANBAN_DB.prepare("DELETE FROM boards WHERE id = ?")
       .bind(boardId)
       .run();
 
-    return Response.redirect(`${url.origin}/`, 302);
+    return new Response(null, {
+      status: 204,
+      headers: corsHeaders,
+    });
   } catch (error) {
-    return new Response("Failed to delete board", { status: 500 });
+    return new Response("Failed to delete board", {
+      status: 500,
+      headers: corsHeaders,
+    });
   }
 }
 
 function generateBoardId() {
   return [...Array(8)].map(() => Math.random().toString(36)[2]).join("");
+}
+
+// Validate API key
+function isValidApiKey(apiKey, env) {
+  // If no API key is configured in environment, skip validation
+  if (!env.API_KEY) return true;
+
+  // Otherwise, require and validate API key
+  return apiKey === env.API_KEY;
 }

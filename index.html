@@ -257,6 +257,28 @@
 
     <script>
       function boardData() {
+        const API_URL = "https://tasks-api.leefamous.workers.dev";
+        const API_KEY = "YOUR-API-KEY-HERE"; // This will be replaced with an environment variable
+
+        // Helper function for API calls
+        async function fetchAPI(endpoint, options = {}) {
+          const headers = {
+            "X-API-Key": API_KEY,
+            ...options.headers,
+          };
+
+          const response = await fetch(`${API_URL}${endpoint}`, {
+            ...options,
+            headers,
+          });
+
+          if (!response.ok) {
+            throw new Error(`API call failed: ${response.statusText}`);
+          }
+
+          return response;
+        }
+
         return {
           boardId: null,
           boardTitle: "Untitled Board",
@@ -277,7 +299,7 @@
 
           async loadBoard() {
             try {
-              const response = await fetch(`/api/board/${this.boardId}`);
+              const response = await fetchAPI(`/board/${this.boardId}`);
               const data = await response.json();
               this.boardTitle = data.title;
               this.columns = data.columns;
@@ -288,7 +310,9 @@
 
           async createNewBoard() {
             try {
-              const response = await fetch("/api/board", { method: "POST" });
+              const response = await fetchAPI("/board", {
+                method: "POST",
+              });
               const data = await response.json();
               window.location.href = `/${data.boardId}`;
             } catch (error) {
@@ -298,7 +322,7 @@
 
           async saveBoard() {
             try {
-              await fetch(`/api/board/${this.boardId}`, {
+              await fetchAPI(`/board/${this.boardId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
