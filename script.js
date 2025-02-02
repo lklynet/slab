@@ -137,7 +137,8 @@ function setupEventListeners() {
 
   menuButton.addEventListener("click", (event) => {
     event.stopPropagation();
-    dropdownMenu.classList.toggle("hidden");
+    const isExpanded = dropdownMenu.classList.toggle("hidden");
+    menuButton.setAttribute("aria-expanded", !isExpanded);
   });
 
   // Close menu when clicking outside
@@ -243,6 +244,8 @@ function renderBoard() {
     const columnElement = document.createElement("div");
     columnElement.className =
       "min-w-[250px] bg-gray-800 rounded-md mr-4 flex flex-col text-sm h-full";
+    columnElement.setAttribute("role", "listitem");
+    columnElement.setAttribute("aria-label", `${column.name} column`);
 
     const columnTitle = document.createElement("h2");
     columnTitle.className =
@@ -253,6 +256,8 @@ function renderBoard() {
 
     const tasksContainer = document.createElement("div");
     tasksContainer.className = "flex-1 p-2 overflow-y-auto bg-gray-800";
+    tasksContainer.setAttribute("role", "list");
+    tasksContainer.setAttribute("aria-label", `Tasks in ${column.name}`);
     tasksContainer.addEventListener("dragover", dragOver);
     tasksContainer.addEventListener("drop", (e) => dropTask(e, columnIndex));
     columnElement.appendChild(tasksContainer);
@@ -267,6 +272,21 @@ function renderBoard() {
       taskElement.draggable = true;
       taskElement.dataset.columnIndex = columnIndex;
       taskElement.dataset.taskIndex = taskIndex;
+      taskElement.setAttribute("role", "listitem");
+      taskElement.setAttribute("tabindex", "0");
+      taskElement.setAttribute(
+        "aria-label",
+        `${task.text}${task.completed ? " (completed)" : ""}`
+      );
+
+      // Add keyboard support for task completion
+      taskElement.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggleTaskCompletion(columnIndex, taskIndex);
+        }
+      });
+
       taskElement.addEventListener("dragstart", dragStart);
 
       const taskContent = document.createElement("div");
@@ -275,6 +295,7 @@ function renderBoard() {
       if (task.completed) {
         const checkmark = document.createElement("i");
         checkmark.className = "fas fa-check-circle mr-2 text-gray-950";
+        checkmark.setAttribute("aria-hidden", "true");
         taskContent.appendChild(checkmark);
       }
 
