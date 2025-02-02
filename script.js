@@ -242,24 +242,24 @@ function renderBoard() {
   boardData.columns.forEach((column, columnIndex) => {
     const columnElement = document.createElement("div");
     columnElement.className =
-      "min-w-[250px] bg-[#313244] rounded-md mr-4 flex flex-col text-sm h-full";
+      "min-w-[250px] bg-[#181825] rounded-md mr-4 flex flex-col text-sm h-full";
 
     const columnTitle = document.createElement("h2");
     columnTitle.className =
-      "p-3 m-0 rounded-t-md text-center font-bold text-[#cdd6f4]";
+      "p-3 m-0 rounded-t-md text-center font-bold text-[#11111b]";
     columnTitle.textContent = column.name;
     columnTitle.style.backgroundColor = getColumnColor(columnIndex);
     columnElement.appendChild(columnTitle);
 
     const tasksContainer = document.createElement("div");
-    tasksContainer.className = "flex-1 p-2 overflow-y-auto bg-[#1e1e2e]";
+    tasksContainer.className = "flex-1 p-2 overflow-y-auto bg-[#181825]";
     tasksContainer.addEventListener("dragover", dragOver);
     tasksContainer.addEventListener("drop", (e) => dropTask(e, columnIndex));
     columnElement.appendChild(tasksContainer);
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = `bg-[#313244] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#45475a] ${
+      taskElement.className = `bg-[#1e1e2e] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#313244] ${
         task.completed
           ? "bg-[#a6e3a1] bg-opacity-20 text-[#a6e3a1]"
           : "text-[#cdd6f4]"
