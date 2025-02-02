@@ -34,20 +34,20 @@ git clone https://github.com/lkly/tasks.git
 cd tasks
 ```
 
-2. Create a Cloudflare Pages project:
+2 Create a Cloudflare Pages project:
 
 - Connect your GitHub repository
 - Set the build command to: (none)
 - Set the build output directory to: .
 - Deploy!
 
-3. Create a Cloudflare Worker:
+3 Create a Cloudflare Worker:
 
 - Copy the contents of `worker.js` to a new Cloudflare Worker
 - Create a new KV namespace called `TASKS_DB`
 - Bind the KV namespace to your worker with the variable name `TASKS_DB`
 
-4. Configure your domain:
+4 Configure your domain:
 
 - Add `tasks.lkly.net` to your Cloudflare DNS
 - Point it to your Cloudflare Pages deployment
