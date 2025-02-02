@@ -2,7 +2,22 @@ const API_URL = "https://tasks-api.leefamous.workers.dev";
 const API_KEY = window.API_KEY || "";
 
 // Initialize the app
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  const path = window.location.pathname;
+
+  // If we're at the root, create a new board
+  if (path === "/" || path === "") {
+    try {
+      const response = await fetchAPI("/");
+      const data = await response.json();
+      window.location.href = `/${data.boardId}`;
+      return;
+    } catch (error) {
+      console.error("Failed to create new board:", error);
+    }
+  }
+
+  // Otherwise load existing board
   setupEventListeners();
   parseBoardConfig();
   setupSplitter();

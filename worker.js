@@ -26,17 +26,17 @@ async function handleRequest(request, env) {
     });
   }
 
+  const url = new URL(request.url);
+  const path = url.pathname;
+
   // Add CORS headers to all responses
   const baseHeaders = {
     ...corsHeaders,
     "Content-Type": "application/json",
   };
 
-  const url = new URL(request.url);
-  const path = url.pathname;
-
   if (path === "/" || path === "") {
-    // Create a new board and redirect
+    // Create a new board
     const boardId = generateBoardId();
     const defaultConfig = `My Kanban Board
 /To Do
@@ -51,6 +51,7 @@ async function handleRequest(request, env) {
       .bind(boardId, defaultConfig, timestamp)
       .run();
 
+    // Return the boardId instead of redirecting
     return new Response(JSON.stringify({ boardId }), {
       headers: baseHeaders,
       status: 200,
