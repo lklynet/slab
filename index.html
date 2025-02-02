@@ -83,6 +83,11 @@
     />
     <link rel="stylesheet" href="https://use.typekit.net/bop8ekr.css" />
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <script>
+      // Inject API key from environment
+      window.API_KEY = "{{API_KEY}}"; // This will be replaced by Cloudflare Pages
+    </script>
   </head>
   <body
     class="bg-dark text-gray-100 font-mono min-h-screen"
@@ -264,8 +269,27 @@
     </div>
 
     <script>
-      const API_KEY = "your-api-key-here"; // Replace with environment variable
-      const API_URL = "your-worker-url-here"; // Replace with your worker URL
+      const API_URL = "https://tasks-api.leefamous.workers.dev";
+      const API_KEY = window.API_KEY || ""; // Will be set by environment variable
+
+      async function fetchAPI(endpoint, options = {}) {
+        const headers = {
+          "X-API-Key": API_KEY,
+          "Content-Type": "application/json",
+          ...options.headers,
+        };
+
+        const response = await fetch(`${API_URL}${endpoint}`, {
+          ...options,
+          headers,
+        });
+
+        if (!response.ok) {
+          throw new Error(`API call failed: ${response.statusText}`);
+        }
+
+        return response;
+      }
 
       function boardData() {
         return {
@@ -288,7 +312,7 @@
 
           async loadBoard() {
             try {
-              const response = await fetch(`${API_URL}/board/${this.boardId}`);
+              const response = await fetchAPI(`/board/${this.boardId}`);
               const data = await response.json();
               this.boardTitle = data.title;
               this.columns = data.columns;
@@ -299,7 +323,7 @@
 
           async createNewBoard() {
             try {
-              const response = await fetch(`${API_URL}/board`, {
+              const response = await fetchAPI("/board", {
                 method: "POST",
               });
               const data = await response.json();
@@ -311,15 +335,13 @@
 
           async saveBoard() {
             try {
-              const response = await fetch(`${API_URL}/board/${this.boardId}`, {
+              await fetchAPI(`/board/${this.boardId}`, {
                 method: "PUT",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   title: this.boardTitle,
                   columns: this.columns,
                 }),
               });
-              if (!response.ok) throw new Error("Failed to save board");
             } catch (error) {
               console.error("Failed to save board:", error);
             }
@@ -389,15 +411,11 @@
         const saveStatus = document.getElementById("save-status");
 
         try {
-          const response = await fetch(window.location.pathname, {
+          const response = await fetchAPI(window.location.pathname, {
             method: "POST",
-            headers: {
-              "X-API-Key": API_KEY,
-            },
             body: new URLSearchParams({ config: configText }),
           });
 
-          if (!response.ok) throw new Error("Failed to save");
           saveStatus.style.backgroundColor = "var(--save-green)";
         } catch (error) {
           console.error("Failed to save board configuration:", error);
@@ -409,7 +427,7 @@
       async function startNewBoard() {
         if (confirm("Are you sure you want to start a new board?")) {
           try {
-            const response = await fetch(API_URL, {
+            const response = await fetchAPI("/", {
               headers: {
                 "X-API-Key": API_KEY,
               },

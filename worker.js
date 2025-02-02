@@ -5,11 +5,32 @@ export default {
 };
 
 async function handleRequest(request, env) {
+  // Add CORS headers
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
+  };
+
+  // Handle CORS preflight
+  if (request.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
   // Verify API key
   const apiKey = request.headers.get("X-API-Key");
   if (apiKey !== env.API_KEY) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: corsHeaders,
+    });
   }
+
+  // Add CORS headers to all responses
+  const baseHeaders = {
+    ...corsHeaders,
+    "Content-Type": "application/json",
+  };
 
   const url = new URL(request.url);
   const path = url.pathname;
@@ -31,7 +52,7 @@ async function handleRequest(request, env) {
       .run();
 
     return new Response(JSON.stringify({ boardId }), {
-      headers: { "Content-Type": "application/json" },
+      headers: baseHeaders,
       status: 200,
     });
   } else {
@@ -46,7 +67,7 @@ async function handleRequest(request, env) {
 
       if (results.length > 0) {
         return new Response(JSON.stringify({ config: results[0].config }), {
-          headers: { "Content-Type": "application/json" },
+          headers: baseHeaders,
           status: 200,
         });
       } else {
@@ -60,15 +81,24 @@ async function handleRequest(request, env) {
         .bind(config, boardId)
         .run();
 
-      return new Response("Board updated", { status: 200 });
+      return new Response("Board updated", {
+        headers: baseHeaders,
+        status: 200,
+      });
     } else if (request.method === "DELETE") {
       await env.KANBAN_DB.prepare("DELETE FROM boards WHERE id = ?")
         .bind(boardId)
         .run();
 
-      return new Response("Board deleted", { status: 200 });
+      return new Response("Board deleted", {
+        headers: baseHeaders,
+        status: 200,
+      });
     } else {
-      return new Response("Method not allowed", { status: 405 });
+      return new Response("Method not allowed", {
+        headers: baseHeaders,
+        status: 405,
+      });
     }
   }
 }
