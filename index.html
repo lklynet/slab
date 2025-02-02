@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tasks - LKLY.net</title>
+
+    <!-- Meta Tags -->
+    <meta
+      name="description"
+      content="A minimalist Kanban board for effortless task management"
+    />
+    <meta
+      name="keywords"
+      content="kanban board, task management, productivity tool"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Tasks - LKLY.net" />
+    <meta
+      property="og:description"
+      content="A minimalist Kanban board for effortless task management"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tasks.lkly.net" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Alpine.js -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Custom Tailwind Config -->
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              dark: {
+                DEFAULT: "#0d0d0d",
+                100: "#1a1a1a",
+                200: "#262626",
+                300: "#404040",
+              },
+              accent: "#FF6F61",
+            },
+            fontFamily: {
+              mono: ["Roboto Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Styles -->
+    <style>
+      [x-cloak] {
+        display: none !important;
+      }
+      .board-column {
+        min-width: 300px;
+        max-width: 300px;
+      }
+      .task-card {
+        word-break: break-word;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-dark text-gray-100 font-mono min-h-screen"
+    x-data="boardData()"
+    x-init="initializeBoard()"
+  >
+    <!-- Header -->
+    <header class="fixed w-full bg-dark-100 border-b border-dark-300 z-50">
+      <nav class="container mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <a href="https://lkly.net" class="text-2xl font-bold text-accent"
+              >[>_ ]</a
+            >
+            <span class="text-xl font-bold">Tasks</span>
+          </div>
+          <div class="flex items-center space-x-4">
+            <button
+              @click="createNewBoard()"
+              class="text-sm px-4 py-2 bg-accent text-white rounded hover:bg-opacity-90 transition"
+            >
+              New Board
+            </button>
+            <button
+              @click="showShareModal = true"
+              class="text-sm px-4 py-2 border border-dark-300 rounded hover:border-accent transition"
+            >
+              Share
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Board -->
+    <main class="pt-20 px-4">
+      <div class="container mx-auto">
+        <!-- Board Title -->
+        <div class="py-4">
+          <input
+            type="text"
+            x-model="boardTitle"
+            @change="saveBoardTitle()"
+            class="text-2xl font-bold bg-transparent border-none focus:outline-none focus:ring-0 w-full"
+            placeholder="Untitled Board"
+          />
+        </div>
+
+        <!-- Columns -->
+        <div class="flex space-x-6 overflow-x-auto pb-8">
+          <template x-for="column in columns" :key="column.id">
+            <div class="board-column flex-shrink-0 bg-dark-200 rounded-lg p-4">
+              <!-- Column Header -->
+              <div class="flex items-center justify-between mb-4">
+                <input
+                  type="text"
+                  x-model="column.title"
+                  @change="saveBoard()"
+                  class="text-lg font-bold bg-transparent border-none focus:outline-none focus:ring-0"
+                />
+                <button
+                  @click="deleteColumn(column.id)"
+                  class="text-gray-400 hover:text-accent"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Tasks -->
+              <div class="space-y-3">
+                <template x-for="task in column.tasks" :key="task.id">
+                  <div
+                    class="task-card bg-dark-100 p-3 rounded border border-dark-300 hover:border-accent cursor-pointer"
+                    @click="editTask(task)"
+                  >
+                    <p x-text="task.content"></p>
+                  </div>
+                </template>
+
+                <!-- Add Task Button -->
+                <button
+                  @click="addTask(column.id)"
+                  class="w-full py-2 text-gray-400 hover:text-accent text-sm border border-dark-300 rounded hover:border-accent transition"
+                >
+                  + Add Task
+                </button>
+              </div>
+            </div>
+          </template>
+
+          <!-- Add Column Button -->
+          <button
+            @click="addColumn()"
+            class="board-column flex-shrink-0 h-20 border-2 border-dashed border-dark-300 rounded-lg hover:border-accent transition flex items-center justify-center text-gray-400 hover:text-accent"
+          >
+            + Add Column
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Share Modal -->
+    <div
+      x-show="showShareModal"
+      x-cloak
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-dark-200 p-6 rounded-lg max-w-md w-full mx-4"
+        @click.away="showShareModal = false"
+      >
+        <h3 class="text-xl font-bold mb-4">Share Board</h3>
+        <div class="flex space-x-2">
+          <input
+            type="text"
+            x-ref="shareUrl"
+            :value="window.location.href"
+            readonly
+            class="flex-1 px-3 py-2 bg-dark-100 border border-dark-300 rounded focus:outline-none focus:border-accent"
+          />
+          <button
+            @click="copyShareUrl()"
+            class="px-4 py-2 bg-accent text-white rounded hover:bg-opacity-90 transition"
+          >
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Edit Modal -->
+    <div
+      x-show="showTaskModal"
+      x-cloak
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-dark-200 p-6 rounded-lg max-w-md w-full mx-4"
+        @click.away="showTaskModal = false"
+      >
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold">Edit Task</h3>
+          <button @click="deleteTask()" class="text-red-500 hover:text-red-400">
+            Delete
+          </button>
+        </div>
+        <textarea
+          x-model="editingTask.content"
+          class="w-full h-32 px-3 py-2 bg-dark-100 border border-dark-300 rounded focus:outline-none focus:border-accent resize-none"
+          placeholder="Task description..."
+        ></textarea>
+        <div class="flex justify-end space-x-3 mt-4">
+          <button
+            @click="showTaskModal = false"
+            class="px-4 py-2 border border-dark-300 rounded hover:border-accent transition"
+          >
+            Cancel
+          </button>
+          <button
+            @click="saveTask()"
+            class="px-4 py-2 bg-accent text-white rounded hover:bg-opacity-90 transition"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function boardData() {
+        return {
+          boardId: null,
+          boardTitle: "Untitled Board",
+          columns: [],
+          showShareModal: false,
+          showTaskModal: false,
+          editingTask: null,
+
+          async initializeBoard() {
+            const boardId = window.location.pathname.slice(1);
+            if (boardId) {
+              this.boardId = boardId;
+              await this.loadBoard();
+            } else {
+              await this.createNewBoard();
+            }
+          },
+
+          async loadBoard() {
+            try {
+              const response = await fetch(`/api/board/${this.boardId}`);
+              const data = await response.json();
+              this.boardTitle = data.title;
+              this.columns = data.columns;
+            } catch (error) {
+              console.error("Failed to load board:", error);
+            }
+          },
+
+          async createNewBoard() {
+            try {
+              const response = await fetch("/api/board", { method: "POST" });
+              const data = await response.json();
+              window.location.href = `/${data.boardId}`;
+            } catch (error) {
+              console.error("Failed to create board:", error);
+            }
+          },
+
+          async saveBoard() {
+            try {
+              await fetch(`/api/board/${this.boardId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  title: this.boardTitle,
+                  columns: this.columns,
+                }),
+              });
+            } catch (error) {
+              console.error("Failed to save board:", error);
+            }
+          },
+
+          addColumn() {
+            this.columns.push({
+              id: Date.now(),
+              title: "New Column",
+              tasks: [],
+            });
+            this.saveBoard();
+          },
+
+          deleteColumn(columnId) {
+            this.columns = this.columns.filter((col) => col.id !== columnId);
+            this.saveBoard();
+          },
+
+          addTask(columnId) {
+            const column = this.columns.find((col) => col.id === columnId);
+            if (column) {
+              column.tasks.push({
+                id: Date.now(),
+                content: "New Task",
+              });
+              this.saveBoard();
+            }
+          },
+
+          editTask(task) {
+            this.editingTask = { ...task };
+            this.showTaskModal = true;
+          },
+
+          saveTask() {
+            this.columns = this.columns.map((column) => ({
+              ...column,
+              tasks: column.tasks.map((task) =>
+                task.id === this.editingTask.id ? this.editingTask : task
+              ),
+            }));
+            this.showTaskModal = false;
+            this.saveBoard();
+          },
+
+          deleteTask() {
+            this.columns = this.columns.map((column) => ({
+              ...column,
+              tasks: column.tasks.filter(
+                (task) => task.id !== this.editingTask.id
+              ),
+            }));
+            this.showTaskModal = false;
+            this.saveBoard();
+          },
+
+          copyShareUrl() {
+            this.$refs.shareUrl.select();
+            document.execCommand("copy");
+          },
+        };
+      }
+    </script>
+  </body>
+</html>
