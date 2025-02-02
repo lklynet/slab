@@ -96,15 +96,12 @@ function setupEventListeners() {
   const saveStatus = document.getElementById("save-status");
   saveBoardConfig();
   saveStatus.className = "w-2 h-2 rounded-full bg-yellow-400";
-  saveStatus.setAttribute("aria-label", "Saving changes...");
   saveBoardConfig()
     .then(() => {
       saveStatus.className = "w-2 h-2 rounded-full bg-green-400";
-      saveStatus.setAttribute("aria-label", "Changes saved successfully");
     })
     .catch(() => {
       saveStatus.className = "w-2 h-2 rounded-full bg-red-400";
-      saveStatus.setAttribute("aria-label", "Failed to save changes");
     });
   boardConfigTextarea.addEventListener(
     "input",
@@ -140,36 +137,13 @@ function setupEventListeners() {
 
   menuButton.addEventListener("click", (event) => {
     event.stopPropagation();
-    const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
-    menuButton.setAttribute("aria-expanded", !isExpanded);
     dropdownMenu.classList.toggle("hidden");
   });
 
-  // Close menu when clicking outside or pressing Escape
+  // Close menu when clicking outside
   document.addEventListener("click", (event) => {
     if (!menuButton.contains(event.target)) {
       dropdownMenu.classList.add("hidden");
-      menuButton.setAttribute("aria-expanded", "false");
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      dropdownMenu.classList.add("hidden");
-      menuButton.setAttribute("aria-expanded", "false");
-    }
-  });
-
-  // Add keyboard navigation for tasks
-  document.addEventListener("keydown", (event) => {
-    if (event.target.closest(".task")) {
-      const task = event.target.closest(".task");
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        const columnIndex = parseInt(task.dataset.columnIndex);
-        const taskIndex = parseInt(task.dataset.taskIndex);
-        toggleTaskCompletion(columnIndex, taskIndex);
-      }
     }
   });
 }
@@ -285,7 +259,7 @@ function renderBoard() {
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = `task bg-gray-900 p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-gray-700 ${
+      taskElement.className = `bg-gray-900 p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-gray-700 ${
         task.completed
           ? "bg-green-400 bg-opacity-20 text-gray-950"
           : "text-gray-100"
@@ -293,12 +267,7 @@ function renderBoard() {
       taskElement.draggable = true;
       taskElement.dataset.columnIndex = columnIndex;
       taskElement.dataset.taskIndex = taskIndex;
-      taskElement.setAttribute("role", "listitem");
-      taskElement.setAttribute("tabindex", "0");
-      taskElement.setAttribute(
-        "aria-label",
-        `${task.text}, ${task.completed ? "completed" : "not completed"}`
-      );
+      taskElement.addEventListener("dragstart", dragStart);
 
       const taskContent = document.createElement("div");
       taskContent.className = "flex items-center";
@@ -409,9 +378,6 @@ async function saveBoardConfig() {
   const saveStatus = document.getElementById("save-status");
 
   try {
-    saveStatus.className = "w-2 h-2 rounded-full bg-yellow-400";
-    saveStatus.setAttribute("aria-label", "Saving changes...");
-
     await fetchAPI(window.location.pathname, {
       method: "POST",
       headers: {
@@ -419,13 +385,10 @@ async function saveBoardConfig() {
       },
       body: new URLSearchParams({ config: configText }),
     });
-
     saveStatus.className = "w-2 h-2 rounded-full bg-green-400";
-    saveStatus.setAttribute("aria-label", "Changes saved successfully");
   } catch (error) {
     console.error("Failed to save board configuration:", error);
     saveStatus.className = "w-2 h-2 rounded-full bg-red-400";
-    saveStatus.setAttribute("aria-label", "Failed to save changes");
     throw error;
   }
 }
@@ -441,15 +404,10 @@ function copyLink() {
   const shareableLink = window.location.href;
   navigator.clipboard.writeText(shareableLink).then(
     () => {
-      const button = document.getElementById("copy-link");
-      const originalText = button.textContent;
-      button.textContent = "Copied!";
-      setTimeout(() => {
-        button.textContent = originalText;
-      }, 2000);
+      alert("Link copied to clipboard!");
     },
     () => {
-      alert("Failed to copy link. Please try again.");
+      alert("Failed to copy link.");
     }
   );
 }

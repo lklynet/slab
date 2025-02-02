@@ -3,35 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="A minimalist Kanban board for efficient task management. Part of the LKLY.net suite of developer tools."
-    />
-    <meta name="theme-color" content="#030712" />
-
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Kanban Board - LKLY.net" />
-    <meta
-      property="og:description"
-      content="A minimalist Kanban board for efficient task management. Part of the LKLY.net suite of developer tools."
-    />
-    <meta property="og:site_name" content="LKLY.net" />
-
-    <!-- Performance -->
-    <link rel="preload" href="/css/output.css" as="style" />
-    <link rel="preload" href="https://use.typekit.net/bop8ekr.css" as="style" />
-
-    <title>Kanban Board - LKLY.net</title>
+    <title>My Kanban Board</title>
 
     <!-- Tailwind CSS -->
+    <!-- <link href="src/output.css" rel="stylesheet" /> -->
     <link href="/css/output.css" rel="stylesheet" />
     <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      media="print"
-      onload="this.media='all'"
     />
     <link rel="stylesheet" href="https://use.typekit.net/bop8ekr.css" />
 
@@ -49,8 +29,6 @@
       <div
         id="sidebar"
         class="w-[280px] min-w-[180px] max-w-[450px] bg-gray-800 flex flex-col overflow-hidden resize-x p-4 border-r border-gray-700"
-        role="complementary"
-        aria-label="Board Configuration"
       >
         <!-- Header -->
         <div class="flex items-center p-2 mb-4">
@@ -58,36 +36,28 @@
             <button
               id="menu-button"
               class="text-2xl cursor-pointer select-none hover:text-pink-400 transition-colors"
-              aria-label="Menu"
-              aria-expanded="false"
-              aria-controls="dropdown-menu"
             >
               ☰
             </button>
             <div
               id="dropdown-menu"
               class="hidden absolute top-8 left-0 bg-gray-950 border border-gray-700 rounded shadow-lg z-10 w-48"
-              role="menu"
-              aria-labelledby="menu-button"
             >
               <button
                 id="start-new"
                 class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold"
-                role="menuitem"
               >
                 Start New
               </button>
               <button
                 id="copy-link"
                 class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold"
-                role="menuitem"
               >
                 Copy Link
               </button>
               <button
                 id="delete-board"
                 class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold text-red-400"
-                role="menuitem"
               >
                 Delete
               </button>
@@ -99,8 +69,6 @@
           <span
             id="save-status"
             class="w-2 h-2 rounded-full bg-green-400"
-            role="status"
-            aria-label="Save status indicator"
           ></span>
         </div>
 
@@ -109,7 +77,6 @@
           id="board-config"
           class="flex-1 w-full resize-none border-0 p-4 bg-gray-950 text-gray-100 text-sm mb-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
           placeholder="Enter board configuration..."
-          aria-label="Board configuration"
         ></textarea>
 
         <!-- Sidebar Buttons -->
@@ -118,13 +85,13 @@
             id="add-column"
             class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors"
           >
-            <i class="fas fa-plus-square mr-2" aria-hidden="true"></i>Add Column
+            <i class="fas fa-plus-square mr-2"></i>Add Column
           </button>
           <button
             id="add-item"
             class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors"
           >
-            <i class="fas fa-plus mr-2" aria-hidden="true"></i>Add Item
+            <i class="fas fa-plus mr-2"></i>Add Item
           </button>
         </div>
       </div>
@@ -133,28 +100,21 @@
       <div
         id="splitter"
         class="w-2.5 bg-gray-800 cursor-col-resize hover:bg-gray-700 transition-colors"
-        role="separator"
-        aria-label="Resize sidebar"
-        aria-valuemin="200"
-        aria-valuemax="450"
       ></div>
 
       <!-- Board Container -->
       <div
         id="board-container"
         class="flex-1 p-5 flex flex-col overflow-hidden bg-gray-900"
-        role="main"
       >
         <div
           id="board-title"
           class="text-lg mb-5 text-blue-400 font-bold"
-          role="heading"
-          aria-level="1"
         ></div>
-        <div id="board" class="flex-1 flex overflow-x-auto" role="list"></div>
+        <div id="board" class="flex-1 flex overflow-x-auto"></div>
       </div>
     </div>
 
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
   </body>
 </html>
