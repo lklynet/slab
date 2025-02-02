@@ -22,58 +22,60 @@
       };
     </script>
   </head>
-  <body class="bg-dark-bg text-dark-text font-mono">
+  <body class="bg-[#1e1e2e] text-[#cdd6f4] font-mono">
     <!-- Main Container -->
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
       <div
         id="sidebar"
-        class="w-[280px] min-w-[180px] max-w-[450px] bg-dark-sidebar flex flex-col overflow-hidden resize-x p-4"
+        class="w-[280px] min-w-[180px] max-w-[450px] bg-[#181825] flex flex-col overflow-hidden resize-x p-4 border-r border-[#313244]"
       >
         <!-- Header -->
         <div class="flex items-center p-2 mb-4">
           <div class="relative">
             <button
               id="menu-button"
-              class="text-2xl cursor-pointer select-none hover:text-accent-highlight transition-colors"
+              class="text-2xl cursor-pointer select-none hover:text-[#f5c2e7] transition-colors"
             >
               ☰
             </button>
             <div
               id="dropdown-menu"
-              class="hidden absolute top-8 left-0 bg-dark-menu border border-dark-border z-10 w-48"
+              class="hidden absolute top-8 left-0 bg-[#11111b] border border-[#313244] rounded shadow-lg z-10 w-48"
             >
               <button
                 id="start-new"
-                class="w-full px-3 py-2 text-left hover:bg-dark-hover text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-[#313244] text-sm font-bold"
               >
                 Start New
               </button>
               <button
                 id="copy-link"
-                class="w-full px-3 py-2 text-left hover:bg-dark-hover text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-[#313244] text-sm font-bold"
               >
                 Copy Link
               </button>
               <button
                 id="delete-board"
-                class="w-full px-3 py-2 text-left hover:bg-dark-hover text-sm font-bold"
+                class="w-full px-3 py-2 text-left hover:bg-[#313244] text-sm font-bold text-[#f38ba8]"
               >
                 Delete
               </button>
             </div>
           </div>
-          <div class="flex-1 text-center text-lg font-bold">[>_ ] lkly.net</div>
+          <div class="flex-1 text-center text-lg font-bold text-[#89b4fa]">
+            [>_ ] lkly.net
+          </div>
           <span
             id="save-status"
-            class="w-2 h-2 rounded-full bg-accent-green"
+            class="w-2 h-2 rounded-full bg-[#a6e3a1]"
           ></span>
         </div>
 
         <!-- Config Textarea -->
         <textarea
           id="board-config"
-          class="flex-1 w-full resize-none border-0 p-4 bg-dark-bg text-dark-text text-sm mb-4 focus:outline-none focus:ring-1 focus:ring-accent-highlight"
+          class="flex-1 w-full resize-none border-0 p-4 bg-[#11111b] text-[#cdd6f4] text-sm mb-4 rounded focus:outline-none focus:ring-1 focus:ring-[#89b4fa]"
           placeholder="Enter board configuration..."
         ></textarea>
 
@@ -81,13 +83,13 @@
         <div class="flex gap-2 p-2">
           <button
             id="add-column"
-            class="flex-1 p-2 bg-dark-menu hover:bg-accent-highlight text-sm font-bold rounded transition-colors"
+            class="flex-1 p-2 bg-[#313244] hover:bg-[#f5c2e7] hover:text-[#11111b] text-sm font-bold rounded transition-colors"
           >
             <i class="fas fa-plus-square mr-2"></i>Add Column
           </button>
           <button
             id="add-item"
-            class="flex-1 p-2 bg-dark-menu hover:bg-accent-highlight text-sm font-bold rounded transition-colors"
+            class="flex-1 p-2 bg-[#313244] hover:bg-[#f5c2e7] hover:text-[#11111b] text-sm font-bold rounded transition-colors"
           >
             <i class="fas fa-plus mr-2"></i>Add Item
           </button>
@@ -95,14 +97,20 @@
       </div>
 
       <!-- Splitter -->
-      <div id="splitter" class="w-2.5 bg-dark-sidebar cursor-col-resize"></div>
+      <div
+        id="splitter"
+        class="w-2.5 bg-[#181825] cursor-col-resize hover:bg-[#313244] transition-colors"
+      ></div>
 
       <!-- Board Container -->
       <div
         id="board-container"
-        class="flex-1 p-5 flex flex-col overflow-hidden"
+        class="flex-1 p-5 flex flex-col overflow-hidden bg-[#1e1e2e]"
       >
-        <div id="board-title" class="text-lg mb-5"></div>
+        <div
+          id="board-title"
+          class="text-lg mb-5 text-[#89b4fa] font-bold"
+        ></div>
         <div id="board" class="flex-1 flex overflow-x-auto"></div>
       </div>
     </div>
