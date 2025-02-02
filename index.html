@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="https://use.typekit.net/bop8ekr.css" />
 
     <script>
-      // Inject API key from environment
-      window.API_KEY = "{{API_KEY}}";
-      console.log("API Key length:", window.API_KEY?.length); // Should show the length, not the actual key
-      console.log("API Key set:", !!window.API_KEY); // Should be true
+      // Get API key from environment variable
+      window.ENV = {
+        API_KEY: "__API_KEY__", // This will be replaced by Cloudflare Pages
+      };
     </script>
   </head>
   <body>

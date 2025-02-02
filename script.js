@@ -1,5 +1,5 @@
 const API_URL = "https://tasks-api.leefamous.workers.dev";
-const API_KEY = window.API_KEY || "";
+const API_KEY = window.ENV?.API_KEY || "";
 
 // Initialize the app
 document.addEventListener("DOMContentLoaded", async () => {
@@ -39,9 +39,9 @@ let isProgrammaticChange = false;
 
 // Helper function for API calls
 async function fetchAPI(endpoint, options = {}) {
-  if (!API_KEY) {
-    console.error("API key is not set");
-    throw new Error("API key is not configured");
+  if (!API_KEY || API_KEY === "__API_KEY__") {
+    console.error("API key is not properly configured");
+    throw new Error("API key is not properly configured");
   }
 
   const headers = {
@@ -51,7 +51,6 @@ async function fetchAPI(endpoint, options = {}) {
   };
 
   try {
-    console.log("Making request with API key:", API_KEY); // Temporary debug log
     const response = await fetch(`${API_URL}${endpoint}`, {
       ...options,
       headers,
