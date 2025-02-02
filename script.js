@@ -127,7 +127,6 @@ function setupEventListeners() {
   // Menu button actions
   document.getElementById("start-new").addEventListener("click", startNewBoard);
   document.getElementById("copy-link").addEventListener("click", copyLink);
-  document.getElementById("clone").addEventListener("click", cloneBoard);
   document
     .getElementById("delete-board")
     .addEventListener("click", deleteBoard);
@@ -408,10 +407,6 @@ function copyLink() {
       alert("Failed to copy link.");
     }
   );
-}
-
-function cloneBoard() {
-  alert("Clone functionality is not implemented yet.");
 }
 
 async function deleteBoard() {
