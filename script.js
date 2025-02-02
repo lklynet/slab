@@ -242,29 +242,28 @@ function renderBoard() {
   boardData.columns.forEach((column, columnIndex) => {
     const columnElement = document.createElement("div");
     columnElement.className =
-      "min-w-[280px] bg-mantle rounded-xl flex flex-col h-full border border-surface0";
+      "min-w-[250px] bg-[#181825] rounded-md mr-4 flex flex-col text-sm h-full";
 
     const columnTitle = document.createElement("h2");
-    columnTitle.className = `p-3 text-sm font-semibold rounded-t-xl ${getColumnColor(
-      columnIndex
-    )}`;
+    columnTitle.className =
+      "p-3 m-0 rounded-t-md text-center font-bold text-[#11111b]";
     columnTitle.textContent = column.name;
+    columnTitle.style.backgroundColor = getColumnColor(columnIndex);
+    columnElement.appendChild(columnTitle);
 
     const tasksContainer = document.createElement("div");
     tasksContainer.className = "flex-1 p-2 overflow-y-auto bg-[#181825]";
     tasksContainer.addEventListener("dragover", dragOver);
     tasksContainer.addEventListener("drop", (e) => dropTask(e, columnIndex));
-    columnElement.appendChild(columnTitle);
     columnElement.appendChild(tasksContainer);
 
     column.tasks.forEach((task, taskIndex) => {
       const taskElement = document.createElement("div");
-      taskElement.className = `group p-3 mb-2 rounded-lg shadow-sm cursor-grab transition-all
-        ${
-          task.completed
-            ? "bg-surface0 text-overlay1 line-through"
-            : "bg-surface1 hover:bg-surface2"
-        }`;
+      taskElement.className = `bg-[#1e1e2e] p-2 mb-2 cursor-grab rounded shadow-md transition-colors hover:bg-[#313244] ${
+        task.completed
+          ? "bg-[#a6e3a1] bg-opacity-20 text-[#a6e3a1]"
+          : "text-[#cdd6f4]"
+      }`;
       taskElement.draggable = true;
       taskElement.dataset.columnIndex = columnIndex;
       taskElement.dataset.taskIndex = taskIndex;
@@ -321,14 +320,14 @@ function updateBoardConfigText() {
 // Assign automatic colors to columns
 function getColumnColor(index) {
   const colors = [
-    "bg-red",
-    "bg-peach",
-    "bg-yellow",
-    "bg-green",
-    "bg-blue",
-    "bg-mauve",
-    "bg-pink",
-    "bg-teal",
+    "#f38ba8", // Red
+    "#fab387", // Peach
+    "#f9e2af", // Yellow
+    "#a6e3a1", // Green
+    "#89b4fa", // Blue
+    "#cba6f7", // Mauve
+    "#f5c2e7", // Pink
+    "#94e2d5", // Teal
   ];
   return colors[index % colors.length];
 }
