@@ -1,26 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-85LBR0M6FY"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-85LBR0M6FY"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'G-85LBR0M6FY');
+      gtag("config", "G-85LBR0M6FY");
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A minimalist Kanban board for efficient task management. Drag-and-drop tasks, create columns, and share boards easily."
+      content="A minimalist Kanban board. Text-driven configuration. Drag-and-drop tasks. Self-hosted."
     />
-    <meta name="theme-color" content="#030712" />
-    <meta property="og:title" content="My Kanban Board - LKLY.net" />
+    <meta name="theme-color" content="#0d0d0d" />
+    <meta property="og:title" content="slab" />
     <meta
       property="og:description"
-      content="A minimalist Kanban board for efficient task management. Drag-and-drop tasks, create columns, and share boards easily."
+      content="A minimalist Kanban board. Text-driven configuration. Drag-and-drop tasks. Self-hosted."
     />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary" />
@@ -28,135 +32,59 @@
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>"
     />
-    <title>My Kanban Board - LKLY.net</title>
+    <title>slab</title>
 
-    <!-- Tailwind CSS -->
-    <!-- <link href="src/output.css" rel="stylesheet" /> -->
-    <link href="/css/output.css" rel="stylesheet" />
-    <!-- Font Awesome -->
+    <link href="/css/slab.css" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="https://use.typekit.net/bop8ekr.css" />
-    <script>
-      // Get API key from environment variable
-      window.ENV = {
-        API_KEY: "__API_KEY__", // This will be replaced by Cloudflare Pages
-      };
-    </script>
   </head>
-  <body class="bg-gray-950 text-gray-100 font-mono">
-    <!-- Main Container -->
-    <div
-      class="flex h-screen overflow-hidden bg-gray-900"
-      role="application"
-      aria-label="Kanban Board"
-    >
-      <!-- Sidebar -->
-      <div
-        id="sidebar"
-        class="w-[280px] min-w-[180px] max-w-[450px] bg-gray-800 flex flex-col overflow-hidden p-4 border-r border-gray-700"
-        role="complementary"
-      >
-        <!-- Header -->
-        <div class="flex items-center p-2 mb-4">
-          <div class="relative">
+  <body>
+    <div id="app" role="application" aria-label="Kanban Board">
+      <div id="sidebar" role="complementary">
+        <div id="header-row">
+          <div class="flex" style="position: relative">
             <button
               id="menu-button"
-              class="text-2xl cursor-pointer select-none hover:text-pink-400 transition-colors"
               aria-label="Menu"
               aria-expanded="false"
               aria-controls="dropdown-menu"
             >
               ☰
             </button>
-            <div
-              id="dropdown-menu"
-              class="hidden absolute top-8 left-0 bg-gray-950 border border-gray-700 rounded shadow-lg z-10 w-48"
-              role="menu"
-            >
-              <button
-                id="start-new"
-                class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold"
-                role="menuitem"
-              >
-                Start New
-              </button>
-              <button
-                id="copy-link"
-                class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold"
-                role="menuitem"
-              >
-                Copy Link
-              </button>
-              <button
-                id="delete-board"
-                class="w-full px-3 py-2 text-left hover:bg-gray-700 text-sm font-bold text-red-400"
-                role="menuitem"
-              >
-                Delete
-              </button>
+            <div id="dropdown-menu" class="hidden" role="menu">
+              <button id="start-new" role="menuitem">Start New</button>
+              <button id="copy-link" role="menuitem">Copy Link</button>
+              <button id="delete-board" role="menuitem">Delete</button>
             </div>
           </div>
-          <div class="flex-1 text-center text-lg font-bold text-blue-400">
-            [>_ ] lkly.net
-          </div>
-          <span
-            id="save-status"
-            class="w-2 h-2 rounded-full bg-green-400"
-            role="status"
-            aria-label="Save status indicator"
-          ></span>
+          <div id="app-title">slab</div>
         </div>
 
-        <!-- Config Textarea -->
         <textarea
           id="board-config"
-          class="flex-1 w-full resize-none border-0 p-4 bg-gray-950 text-gray-100 text-sm mb-4 rounded focus:outline-none focus:ring-1 focus:ring-blue-400"
           placeholder="Enter board configuration..."
           aria-label="Board configuration"
         ></textarea>
 
-        <!-- Sidebar Buttons -->
-        <div class="flex gap-2 p-2">
-          <button
-            id="add-column"
-            class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400"
-          >
-            <i class="fas fa-plus-square mr-2" aria-hidden="true"></i>Add Column
+        <div id="action-buttons">
+          <button id="add-column" class="btn-action">
+            <i class="fas fa-plus-square mr-2" aria-hidden="true"></i>Column
           </button>
-          <button
-            id="add-item"
-            class="flex-1 p-2 bg-gray-700 hover:bg-pink-400 hover:text-gray-950 text-sm font-bold rounded transition-colors focus:outline-none focus:ring-2 focus:ring-pink-400"
-          >
-            <i class="fas fa-plus mr-2" aria-hidden="true"></i>Add Item
+          <button id="add-item" class="btn-action">
+            <i class="fas fa-plus mr-2" aria-hidden="true"></i>Task
           </button>
         </div>
       </div>
 
-      <!-- Splitter -->
-      <div
-        id="splitter"
-        class="w-2.5 bg-gray-800 cursor-col-resize hover:bg-gray-700 transition-colors"
-        role="separator"
-        aria-label="Resize sidebar"
-      ></div>
+      <div id="splitter" role="separator" aria-label="Resize sidebar"></div>
 
-      <!-- Board Container -->
-      <div
-        id="board-container"
-        class="flex-1 p-5 flex flex-col overflow-hidden bg-gray-900"
-        role="main"
-      >
-        <div
-          id="board-title"
-          class="text-lg mb-5 text-blue-400 font-bold"
-          role="heading"
-          aria-level="1"
-        ></div>
-        <div id="board" class="flex-1 flex overflow-x-auto" role="list"></div>
+      <div id="board-container" role="main">
+        <div id="board-title" role="heading" aria-level="1"></div>
+        <div id="board" role="list"></div>
       </div>
     </div>
 
