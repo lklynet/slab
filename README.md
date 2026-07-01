@@ -1,5 +1,7 @@
 # slab
 
+<p align="center"><img src="image/astley.webp" alt="slab screenshot"></p>
+
 A minimalist Kanban board. Text-driven configuration, drag-and-drop columns, single binary.
 
 ## How it works
@@ -25,8 +27,7 @@ Drag tasks between columns. Click to toggle done. Every board gets a shareable U
 ## Run
 
 ```bash
-npm install
-npm start
+node server.js
 ```
 
 Open `http://localhost:3000`.
@@ -40,7 +41,7 @@ docker compose up -d
 The image is also published to `ghcr.io/lkly/slab` on push to `main`.
 
 ```bash
-docker pull ghcr.io/lkly/slab:latest
+docker pull ghcr.io/lklynet/slab:latest
 docker run -d -p 3000:3000 -v ./data:/app/data ghcr.io/lkly/slab:latest
 ```
 
@@ -48,9 +49,9 @@ docker run -d -p 3000:3000 -v ./data:/app/data ghcr.io/lkly/slab:latest
 
 - Vanilla JavaScript frontend, no framework
 - Node.js HTTP server, no framework
-- SQLite via better-sqlite3
+- SQLite via node:sqlite
 - ~3 KB of handwritten CSS
-- Single ~20 MB Docker image (Alpine)
+- Minimal Docker image (Alpine)
 
 ## License
 

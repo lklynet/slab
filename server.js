@@ -3,7 +3,7 @@ import { mkdirSync, createReadStream } from "node:fs";
 import { readFile, access } from "node:fs/promises";
 import { join, extname } from "node:path";
 import { fileURLToPath } from "node:url";
-import Database from "better-sqlite3";
+import { DatabaseSync } from "node:sqlite";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
@@ -25,8 +25,8 @@ const STATIC_FILES = new Set([
 
 mkdirSync(join(__dirname, "data"), { recursive: true });
 
-const db = new Database(DB_PATH);
-db.pragma("journal_mode = WAL");
+const db = new DatabaseSync(DB_PATH);
+db.exec("PRAGMA journal_mode = WAL");
 db.exec(`
   CREATE TABLE IF NOT EXISTS boards (
     id TEXT PRIMARY KEY,

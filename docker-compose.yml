@@ -1,6 +1,6 @@
 services:
   slab:
-    image: ghcr.io/lkly/slab:latest
+    image: ghcr.io/lklynet/slab:latest
     ports:
       - "3000:3000"
     volumes:
